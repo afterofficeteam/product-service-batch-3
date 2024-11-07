@@ -1,0 +1,14 @@
+APP_PORT: 9990
+BASE_URL_PATH: "/gateway-service"
+DB_SSL_MODE: "disable"
+DB_USER: root
+DB_HOST: localhost
+DB_PASSWORD: fatannajuda
+DB_NAME: db_users
+DB_DEBUG: true
+DB_PORT: 5432
+
+REDIS_HOST: localhost
+REDIS_PORT: 6379
+REDIS_PASSWORD:
+REDIS_DB: 0

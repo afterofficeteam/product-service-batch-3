@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "09f58c97-18b7-4ec9-9362-10e8c05a66ca",
+		"name": "Batch-3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37021540"
+	},
+	"item": [
+		{
+			"name": "user-svc",
+			"item": [
+				{
+					"name": "Signup by email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fatan@afteroffice.co.id\",\n    \"username\": \"fatannajuda\",\n    \"password\": \"fatannajuda\",\n    \"role\": \"Admin\",\n    \"Address\": \"Bekasi\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9990/gateway-service/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"gateway-service",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin by email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"fatannajudas\",\n    \"password\": \"fatannajuda\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9990/gateway-service/signin",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"gateway-service",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product-svc",
+			"item": [
+				{
+					"name": "shops",
+					"item": []
+				},
+				{
+					"name": "products",
+					"item": [
+						{
+							"name": "get product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/product-service/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"product-service",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b10d726e-94bb-435e-a142-a279b92edac1"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "get product (V)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8000/product-service/products/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8000",
+											"path": [
+												"product-service",
+												"products",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "b10d726e-94bb-435e-a142-a279b92edac1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "DELETE, POST, GET, OPTIONS, PUT, PATCH"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 07 Nov 2024 12:40:44 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "322"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\",\n    \"data\": {\n        \"id\": \"b10d726e-94bb-435e-a142-a279b92edac1\",\n        \"shop_id\": \"98d3ba33-8946-4e64-8b4f-9b14069caf42\",\n        \"category_id\": \"ef0680f0-0ee9-43b5-96ce-da0e8cc18af3\",\n        \"shop_name\": \"AfterOffice Shop\",\n        \"category_name\": \"Books\",\n        \"name\": \"Product 2\",\n        \"price\": 200,\n        \"stock\": 2000,\n        \"image_url\": \"https://via.placeholder.com/150\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "create product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-USER-ID",
+										"value": "83e57d42-334c-45e9-949d-6674d2ac9928",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shop_id\": \"98d3ba33-8946-4e64-8b4f-9b14069caf42\",\r\n    \"category_id\": \"2c67cf1d-f11c-4933-9583-9430c6c965e3\",\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"price\": 10000,\r\n    \"stock\": 500000,\r\n    \"image_url\": \"{{$randomImageUrl}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/product-service/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"product-service",
+										"products"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "create product (v)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-USER-ID",
+												"value": "83e57d42-334c-45e9-949d-6674d2ac9928",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"shop_id\": \"98d3ba33-8946-4e64-8b4f-9b14069caf42\",\r\n    \"category_id\": \"2c67cf1d-f11c-4933-9583-9430c6c965e3\",\r\n    \"name\": \"{{$randomProductName}}\",\r\n    \"price\": 10000,\r\n    \"stock\": 500000,\r\n    \"image_url\": \"{{$randomImageUrl}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8000/product-service/products",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8000",
+											"path": [
+												"product-service",
+												"products"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "DELETE, POST, GET, OPTIONS, PUT, PATCH"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 07 Nov 2024 13:19:47 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "342"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\",\n    \"data\": {\n        \"id\": \"d311d73e-6be7-4b96-91a7-6d9333e725bc\",\n        \"shop_id\": \"98d3ba33-8946-4e64-8b4f-9b14069caf42\",\n        \"category_id\": \"2c67cf1d-f11c-4933-9583-9430c6c965e3\",\n        \"shop_name\": \"AfterOffice Shop\",\n        \"category_name\": \"Electronics\",\n        \"name\": \"Practical Cotton Gloves\",\n        \"price\": 10000,\n        \"stock\": 500000,\n        \"image_url\": \"http://placeimg.com/640/480\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "delete product",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-USER-ID",
+										"value": "83e57d42-334c-45e9-949d-6674d2ac9928",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8000/product-service/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"product-service",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "d311d73e-6be7-4b96-91a7-6d9333e725bc"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "delete product (V)",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "X-USER-ID",
+												"value": "83e57d42-334c-45e9-949d-6674d2ac9928",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:8000/product-service/products/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8000",
+											"path": [
+												"product-service",
+												"products",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "d311d73e-6be7-4b96-91a7-6d9333e725bc"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "DELETE, POST, GET, OPTIONS, PUT, PATCH"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 07 Nov 2024 13:29:42 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "34"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\",\n    \"data\": null\n}"
+								}
+							]
+						},
+						{
+							"name": "get products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/product-service/products?page=2&limit=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"product-service",
+										"products"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "get products (V)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8000/product-service/products",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8000",
+											"path": [
+												"product-service",
+												"products"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "limit",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "DELETE, POST, GET, OPTIONS, PUT, PATCH"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 07 Nov 2024 14:09:17 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "658"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\",\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": \"379c4c4b-6262-4839-9a43-1c2dc2d047a0\",\n                \"name\": \"Product 1\",\n                \"price\": 100,\n                \"stock\": 1000,\n                \"image_url\": \"https://via.placeholder.com/150\"\n            },\n            {\n                \"id\": \"b10d726e-94bb-435e-a142-a279b92edac1\",\n                \"name\": \"Product 2\",\n                \"price\": 200,\n                \"stock\": 2000,\n                \"image_url\": \"https://via.placeholder.com/150\"\n            },\n            {\n                \"id\": \"69bf9636-da3d-4356-90e8-8c17642d9842\",\n                \"name\": \"Product 3\",\n                \"price\": 300,\n                \"stock\": 3000,\n                \"image_url\": \"https://via.placeholder.com/150\"\n            },\n            {\n                \"id\": \"d1d6f6b2-d0ea-4816-9be4-ea590fea857e\",\n                \"name\": \"Fantastic Plastic Shoes\",\n                \"price\": 10000,\n                \"stock\": 500000,\n                \"image_url\": \"http://placeimg.com/640/480\"\n            }\n        ],\n        \"meta\": {\n            \"total_data\": 4,\n            \"total_page\": 1,\n            \"page\": 1,\n            \"limit\": 10\n        }\n    }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
