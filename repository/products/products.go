@@ -42,18 +42,18 @@ func (s *store) GetProduct(req *model.GetProductReq) (*model.GetProductResp, err
 			log.Printf("repo::GetProduct - failed to get product data from redis: %v", err)
 			return nil, err
 		}
-	}
 
-	resp, err = s.getProductInDB(req)
-	if err != nil {
-		log.Printf("repo::GetProduct - failed to get product data from db: %v", err)
-		return nil, err
-	}
+		resp, err = s.getProductInDB(req)
+		if err != nil {
+			log.Printf("repo::GetProduct - failed to get product data from db: %v", err)
+			return nil, err
+		}
 
-	err = s.setProductInRedis(req, resp)
-	if err != nil {
-		log.Printf("repo::GetProduct - failed to set product data in redis: %v", err)
-		return nil, err
+		err = s.setProductInRedis(req, resp)
+		if err != nil {
+			log.Printf("repo::GetProduct - failed to set product data in redis: %v", err)
+			return nil, err
+		}
 	}
 
 	return resp, nil
