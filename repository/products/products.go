@@ -252,6 +252,31 @@ func (s *store) DeleteProduct(req *model.DeleteProductReq) error {
 }
 
 func (s *store) GetProducts(req *model.GetProductsReq) (*model.GetProductsResp, error) {
+	resp, err := s.getProductsInRedis(req)
+	if err != nil {
+		if err != redis.Nil {
+			log.Printf("repo::GetProducts - failed to get products data from redis: %v", err)
+			return nil, err
+		}
+
+		resp, err = s.getProductsInDB(req)
+		if err != nil {
+			log.Printf("repo::GetProducts - failed to get products data from db: %v", err)
+			return nil, err
+		}
+
+		err = s.setProductsInRedis(req, resp)
+		if err != nil {
+			log.Printf("repo::GetProducts - failed to set products data in redis: %v", err)
+			return nil, err
+		}
+	}
+
+	return resp, nil
+}
+
+func (s *store) getProductsInDB(req *model.GetProductsReq) (*model.GetProductsResp, error) {
+	log.Printf("repo::getProductsInDB - fetching products data from db")
 	var (
 		totalData int
 		res       = new(model.GetProductsResp)
@@ -280,7 +305,7 @@ func (s *store) GetProducts(req *model.GetProductsReq) (*model.GetProductsResp, 
 
 	rows, err := s.db.Query(query, args...)
 	if err != nil {
-		log.Printf("repo::GetProducts - failed to fetch products data: %v", err)
+		log.Printf("repo::getProductsInDB - failed to fetch products data: %v", err)
 		return nil, err
 	}
 
@@ -295,7 +320,7 @@ func (s *store) GetProducts(req *model.GetProductsReq) (*model.GetProductsResp, 
 			&d.ImageUrl,
 		); err != nil {
 			rows.Close()
-			log.Printf("repo::GetProducts - failed to scan product data: %v", err)
+			log.Printf("repo::getProductsInDB - failed to scan product data: %v", err)
 			return nil, err
 		}
 		res.Items = append(res.Items, &d)
@@ -305,4 +330,50 @@ func (s *store) GetProducts(req *model.GetProductsReq) (*model.GetProductsResp, 
 	res.Meta.SetMeta(req.Page, req.Limit, totalData)
 
 	return res, nil
+}
+
+func (s *store) getProductsInRedis(req *model.GetProductsReq) (*model.GetProductsResp, error) {
+	log.Printf("repo::getProductsInRedis - fetching products data from redis")
+	var (
+		res = new(model.GetProductsResp)
+		key = fmt.Sprintf("products:page:%d:limit:%d", req.Page, req.Limit)
+	)
+	log.Printf("repo::getProductsInRedis - key: %s", key)
+
+	data, err := s.redis.Get(context.Background(), key).Result()
+	if err != nil {
+		log.Printf("repo::getProductsInRedis - failed to get products data from redis: %v", err)
+		return nil, err
+	}
+
+	// unmarshal json
+	if err := json.Unmarshal([]byte(data), res); err != nil {
+		log.Printf("repo::getProductsInRedis - failed to unmarshal products data: %v", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (s *store) setProductsInRedis(req *model.GetProductsReq, res *model.GetProductsResp) error {
+	log.Printf("repo::setProductsInRedis - setting products data in redis")
+	var (
+		key        = fmt.Sprintf("products:page:%d:limit:%d", req.Page, req.Limit)
+		expiration = time.Minute * 5
+		ctx        = context.Background()
+	)
+
+	// to string json
+	data, err := json.Marshal(res)
+	if err != nil {
+		log.Printf("repo::setProductsInRedis - failed to marshal products data: %v", err)
+		return err
+	}
+
+	if err := s.redis.Set(ctx, key, string(data), expiration).Err(); err != nil {
+		log.Printf("repo::setProductsInRedis - failed to set products data in redis: %v", err)
+		return err
+	}
+
+	return nil
 }
