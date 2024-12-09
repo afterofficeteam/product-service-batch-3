@@ -25,7 +25,12 @@ type ProductSvc interface {
 }
 
 func (s *svc) GetProduct(req *model.GetProductReq) (*model.GetProductResp, error) {
-	return s.store.GetProduct(req)
+	res, err := s.store.GetProduct(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (s *svc) CreateProduct(req *model.CreateProductReq) (*model.GetProductResp, error) {
@@ -34,13 +39,28 @@ func (s *svc) CreateProduct(req *model.CreateProductReq) (*model.GetProductResp,
 		return nil, err
 	}
 
-	return s.store.CreateProduct(req)
+	res, err := s.store.CreateProduct(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (s *svc) GetProducts(req *model.GetProductsReq) (*model.GetProductsResp, error) {
-	return s.store.GetProducts(req)
+	res, err := s.store.GetProducts(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (s *svc) DeleteProduct(req *model.DeleteProductReq) error {
-	return s.store.DeleteProduct(req)
+	err := s.store.DeleteProduct(req)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
